@@ -20,11 +20,11 @@ serve(async (req) => {
     return new Response('Method not allowed', { 
       status: 405,
       headers: corsHeaders,
-    })
+    });
   }
 
   try {
-    const quoteData = await req.json()
+    const quoteData = await req.json();
 
     const emailContent = `
       <h2>New Quote Request</h2>
@@ -50,17 +50,17 @@ serve(async (req) => {
       <p><strong>Frequency:</strong> ${quoteData.schedule.frequency || 'Not specified'}</p>
       
       ${quoteData.additionalInfo ? `<h3>Additional Information</h3><p>${quoteData.additionalInfo}</p>` : ''}
-    `
+    `;
 
     const emailData = {
       from: 'EcoWaste Pro <noreply@ecowastepro.com>',
       to: ['deliab93@mail.com'],
       subject: `New Quote Request from ${quoteData.contact.name}`,
       html: emailContent,
-    }
+    };
 
     if (!RESEND_API_KEY) {
-      console.log('Quote data received:', quoteData)
+      console.log('Quote data received:', quoteData);
       return new Response(
         JSON.stringify({ 
           success: true, 
@@ -70,7 +70,7 @@ serve(async (req) => {
           headers: { 'Content-Type': 'application/json' },
           status: 200 
         }
-      )
+      );
     }
 
     const response = await fetch('https://api.resend.com/emails', {
@@ -80,16 +80,16 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(emailData),
-    })
+    });
 
     if (!response.ok) {
-      const error = await response.text()
-      console.error('Resend API error:', error)
-      throw new Error(`Failed to send email: ${error}`)
+      const error = await response.text();
+      console.error('Resend API error:', error);
+      throw new Error(`Failed to send email: ${error}`);
     }
 
-    const result = await response.json()
-    console.log('Email sent successfully:', result)
+    const result = await response.json();
+    console.log('Email sent successfully:', result);
 
     return new Response(
       JSON.stringify({ 
@@ -97,20 +97,17 @@ serve(async (req) => {
         message: 'Quote sent successfully!',
         emailId: result.id 
       }),
-        headers: { 
-          'Content-Type': 'application/json',
-          ...corsHeaders
-        },
+      { 
         headers: { 
           'Content-Type': 'application/json',
           ...corsHeaders
         },
         status: 200 
       }
-    )
+    );
 
   } catch (error) {
-    console.error('Error processing quote:', error)
+    console.error('Error processing quote:', error);
     return new Response(
       JSON.stringify({ 
         success: false, 
@@ -123,6 +120,6 @@ serve(async (req) => {
         },
         status: 500 
       }
-    )
+    );
   }
-})
+});
