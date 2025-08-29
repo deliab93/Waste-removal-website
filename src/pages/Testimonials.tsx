@@ -15,6 +15,7 @@ const Testimonials = () => {
 
   const handleGetQuote = () => {
     navigate('/contact');
+     window.scrollTo(0, 0);
   };
 
   return (
@@ -170,8 +171,8 @@ const Testimonials = () => {
             Experience the exceptional service that our customers rave about. 
             Get your free quote today and see why we're the trusted choice for waste management.
           </p>
-          <Button variant="hero" size="lg" className="bg-white text-professional-blue hover:bg-gray-100" onClick={handleGetQuote}>
-            Get Your Free Quote
+          <Button variant="secondary" size="lg"  onClick={handleGetQuote}>
+           Contact us
           </Button>
         </div>
       </section>

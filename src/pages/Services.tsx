@@ -4,8 +4,19 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { Home, Building, HardHat, AlertTriangle, Recycle, Clock, CheckCircle, Phone } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Services = () => {
+  const navigate = useNavigate();
+
+    const handleCallNow = () => {
+    window.open('tel:1-800-326-9278', '_self');
+  };
+
+  const handleGetQuote = () => {
+    navigate('/prices');
+     window.scrollTo(0, 0);
+  };
   const services = [
     {
       icon: <Home className="h-12 w-12 text-eco-green" />,
@@ -18,7 +29,7 @@ const Services = () => {
         "Holiday schedule adjustments",
         "Recycling programs"
       ],
-      pricing: "Starting at $29/month"
+      pricing: "Starting at £29/month"
     },
     {
       icon: <Building className="h-12 w-12 text-eco-green" />,
@@ -44,7 +55,7 @@ const Services = () => {
         "Same-day emergency service",
         "Permit assistance"
       ],
-      pricing: "Starting at $299"
+      pricing: "Starting at £299"
     },
     {
       icon: <AlertTriangle className="h-12 w-12 text-eco-green" />,
@@ -154,7 +165,7 @@ const Services = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button variant="cta" className="w-full">
+                  <Button variant="cta" className="w-full" onClick={handleGetQuote}>
                     Get Quote
                   </Button>
                 </CardContent>
@@ -232,10 +243,10 @@ const Services = () => {
             Contact us today for a free quote and discover how we can help with your waste management needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="hero" size="lg" className="bg-white text-professional-blue hover:bg-gray-100">
+            <Button variant="outline-white" size="lg" onClick={handleGetQuote}>
               Get Free Quote
             </Button>
-            <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-professional-blue">
+            <Button variant="secondary" size="lg" onClick={handleCallNow}>
               <Phone className="h-5 w-5 mr-2" />
               Call 1-800-ECO-WASTE
             </Button>

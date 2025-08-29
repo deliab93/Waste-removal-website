@@ -47,7 +47,7 @@ const Prices = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-6 rounded-lg bg-eco-green-light">
               <div className="w-16 h-16 bg-eco-green rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white font-bold text-xl">$</span>
+                <span className="text-white font-bold text-xl">£</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">No Hidden Fees</h3>
               <p className="text-gray-600">

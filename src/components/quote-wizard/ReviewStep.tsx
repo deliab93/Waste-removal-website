@@ -1,10 +1,13 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronLeft, CheckCircle, MapPin, User, Calendar, Package } from 'lucide-react';
+import { ChevronLeft, CheckCircle, MapPin, User, Calendar, Package, PoundSterling, Percent } from 'lucide-react';
 import { format } from 'date-fns';
 import { QuoteData } from '../QuoteWizard';
+import { calculateApproximatePrice } from '@/utils/pricing';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/lib/supabase';
 
 interface ReviewStepProps {
   quoteData: QuoteData;
@@ -13,14 +16,22 @@ interface ReviewStepProps {
 }
 
 const ReviewStep = ({ quoteData, onPrev, onSubmit }: ReviewStepProps) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
   const getServiceName = (serviceId: string) => {
     const serviceMap: { [key: string]: string } = {
-      'general-waste': 'General Waste',
-      'dry-recycling': 'Dry Recycling',
-      'glass-collection': 'Glass Collection',
-      'food-waste': 'Food Waste',
-      'clinical-waste': 'Clinical Waste',
-      'washroom': 'Washroom'
+      'all-services': 'All Services',
+      'appliance-removal': 'Appliance Removal',
+      'construction-waste': 'Builders / Construction Waste Removal',
+      'electronic-removal': 'Electronic Removal',
+      'fridge-removal': 'Fridge Removal',
+      'furniture-removal': 'Furniture Removal',
+      'garden-waste': 'Garden Waste Removal',
+      'general-waste': 'General Waste & Load Sizes',
+      'hazardous-waste': 'Hazardous Waste Removal',
+      'mattress-removal': 'Mattress & Bed Removal',
+      'battery-disposal': 'Old Batteries Disposal',
+      'sofa-removal': 'Sofa & Chair Removal'
     };
     return serviceMap[serviceId] || serviceId;
   };
@@ -34,6 +45,53 @@ const ReviewStep = ({ quoteData, onPrev, onSubmit }: ReviewStepProps) => {
       'quarterly': 'Quarterly'
     };
     return frequencyMap[frequency] || frequency;
+  };
+
+  const pricingInfo = calculateApproximatePrice(
+    quoteData.service,
+    quoteData.quantity,
+    quoteData.unit,
+    quoteData.schedule.frequency
+  );
+
+  const handleSubmit = async () => {
+    console.log('Starting quote submission...', quoteData);
+    setIsSubmitting(true);
+    
+    try {
+      console.log('Calling Supabase edge function...');
+      const { data, error } = await supabase.functions.invoke('send-quote-email', {
+        body: quoteData,
+      });
+
+      console.log('Edge function response:', { data, error });
+
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+
+      if (data?.success) {
+        console.log('Quote submitted successfully');
+        toast({
+          title: "Quote Submitted Successfully!",
+          description: "We'll get back to you within 24 hours with a detailed quote.",
+        });
+        onSubmit();
+      } else {
+        console.error('Quote submission failed:', data);
+        throw new Error(data?.error || 'Failed to submit quote');
+      }
+    } catch (error) {
+      console.error('Error submitting quote:', error);
+      toast({
+        title: "Submission Error",
+        description: "There was an issue submitting your quote. Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -50,10 +108,17 @@ const ReviewStep = ({ quoteData, onPrev, onSubmit }: ReviewStepProps) => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="font-semibold">{getServiceName(quoteData.service)}</p>
-            <p className="text-sm text-muted-foreground">
-              Frequency: {getFrequencyName(quoteData.schedule.frequency)}
-            </p>
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="font-semibold">{getServiceName(quoteData.service)}</p>
+                <p className="text-sm text-muted-foreground">
+                  Quantity: {quoteData.quantity} {quoteData.unit}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Frequency: {getFrequencyName(quoteData.schedule.frequency)}
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -110,6 +175,41 @@ const ReviewStep = ({ quoteData, onPrev, onSubmit }: ReviewStepProps) => {
           </CardContent>
         </Card>
 
+        {/* Pricing Estimate */}
+        <Card className="bg-gradient-to-br from-eco-green to-trust-navy text-white border-0 shadow-lg">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center text-lg text-white">
+              <PoundSterling className="mr-2 h-5 w-5" />
+              Approximate Starting Price
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-lg font-bold">Estimated Cost:</span>
+                <span className="text-2xl font-bold">£{pricingInfo.estimatedPrice}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span>Price Range:</span>
+                <span>£{pricingInfo.priceRange.min} - £{pricingInfo.priceRange.max}</span>
+              </div>
+              {pricingInfo.savings > 0 && (
+                <div className="flex items-center justify-between text-sm bg-white/20 rounded-lg p-2">
+                  <div className="flex items-center">
+                    <Percent className="mr-1 h-4 w-4" />
+                    <span>You save vs. market rate:</span>
+                  </div>
+                  <span className="font-bold">£{pricingInfo.savings}</span>
+                </div>
+              )}
+              <p className="text-xs text-white/80 mt-3">
+                * This is an approximate estimate. Final pricing may vary based on actual waste assessment, 
+                accessibility, and specific requirements. We'll provide an exact quote after our free consultation.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Success Message */}
         <Card className="bg-eco-green-light border-eco-green">
           <CardContent className="pt-6">
@@ -134,11 +234,12 @@ const ReviewStep = ({ quoteData, onPrev, onSubmit }: ReviewStepProps) => {
         </Button>
         
         <Button
-          onClick={onSubmit}
+          onClick={handleSubmit}
+          disabled={isSubmitting}
           className="bg-eco-green hover:bg-eco-green/90 text-white px-8 py-3"
         >
           <CheckCircle className="mr-2 h-4 w-4" />
-          Submit Quote Request
+          {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
         </Button>
       </div>
     </div>

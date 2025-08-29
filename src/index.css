@@ -17,42 +17,42 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 210 20% 14%;
 
-    --primary: 142 78% 28%;
+    --primary: 112 40% 42%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 210 20% 14%;
+    --secondary: 112 15% 95%;
+    --secondary-foreground: 112 30% 25%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 112 15% 95%;
+    --muted-foreground: 112 10% 50%;
 
-    --accent: 142 50% 92%;
-    --accent-foreground: 142 78% 28%;
+    --accent: 112 30% 90%;
+    --accent-foreground: 112 40% 35%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 142 78% 28%;
+    --border: 112 15% 88%;
+    --input: 112 15% 88%;
+    --ring: 112 40% 42%;
 
     /* Custom waste removal theme colors */
-    --eco-green: 142 78% 28%;
-    --eco-green-light: 142 50% 92%;
-    --professional-blue: 211 100% 50%;
-    --trust-navy: 211 84% 22%;
-    --earth-brown: 25 47% 55%;
-    --clean-gray: 210 11% 71%;
+    --eco-green: 112 40% 42%;
+    --eco-green-light: 112 30% 85%;
+    --professional-blue: 112 35% 45%;
+    --trust-navy: 112 45% 25%;
+    --earth-brown: 112 25% 40%;
+    --clean-gray: 112 10% 70%;
 
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(142 78% 28%), hsl(211 84% 22%));
-    --gradient-cta: linear-gradient(135deg, hsl(211 100% 50%), hsl(142 78% 28%));
-    --gradient-section: linear-gradient(180deg, hsl(0 0% 100%), hsl(142 50% 98%));
+    --gradient-hero: linear-gradient(135deg, hsl(112 50% 60%), hsl(112 40% 42%), hsl(112 70% 10%), hsl(112 80% 5%));
+    --gradient-cta: linear-gradient(135deg, hsl(112 60% 70%), hsl(112 40% 42%), hsl(112 50% 20%), hsl(112 65% 8%));
+    --gradient-section: linear-gradient(180deg, hsl(0 0% 100%), hsl(112 35% 85%), hsl(112 40% 75%), hsl(112 30% 90%));
 
     /* Shadows */
-    --shadow-eco: 0 10px 30px -5px hsl(142 78% 28% / 0.2);
-    --shadow-card: 0 4px 12px hsl(210 20% 14% / 0.1);
-    --shadow-cta: 0 8px 25px hsl(211 100% 50% / 0.3);
+    --shadow-eco: 0 10px 30px -5px hsl(112 40% 42% / 0.2);
+    --shadow-card: 0 4px 12px hsl(112 30% 25% / 0.1);
+    --shadow-cta: 0 8px 25px hsl(112 35% 45% / 0.3);
 
     --radius: 0.5rem;
 

@@ -3,9 +3,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
+import { Link, useNavigate } from "react-router-dom";
 import { Users, Award, Leaf, Target, Heart, Shield } from "lucide-react";
 
 const About = () => {
+  const navigate = useNavigate();
+  const handleGetQuote = () => {
+    navigate('/prices');
+     window.scrollTo(0, 0);
+  };
   const values = [
     {
       icon: <Leaf className="h-8 w-8 text-eco-green" />,
@@ -203,7 +209,7 @@ const About = () => {
           <p className="text-xl mb-8">
             Join thousands of satisfied customers who trust us with their waste management needs.
           </p>
-          <Button variant="hero" size="lg" className="bg-white text-professional-blue hover:bg-gray-100">
+          <Button variant="default" size="lg" className="bg-white text-trust-navy hover:bg-gray-200 font-semibold border-2 border-white shadow-lg" onClick={handleGetQuote}>
             Get Your Free Quote Today
           </Button>
         </div>

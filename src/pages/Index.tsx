@@ -13,7 +13,8 @@ const Index = () => {
   const navigate = useNavigate();
 
   const handleGetQuote = () => {
-    navigate('/contact');
+    navigate('/prices');
+     window.scrollTo(0, 0);
   };
 
   const handleCallNow = () => {
@@ -22,10 +23,12 @@ const Index = () => {
 
   const handleViewServices = () => {
     navigate('/services');
+     window.scrollTo(0, 0);
   };
 
   const handleViewTestimonials = () => {
     navigate('/testimonials');
+     window.scrollTo(0, 0);
   };
   const features = [
     {
@@ -89,7 +92,7 @@ const Index = () => {
                 Fast, reliable, and environmentally responsible service.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button variant="hero" size="lg" className="text-lg px-8 py-4" onClick={handleGetQuote}>
+                <Button variant="default" size="lg" className="bg-white text-eco-green text-lg px-8 py-4 hover:text-white" onClick={handleGetQuote}>
                   Get Free Quote
                 </Button>
                 <Button variant="outline-white" size="lg" className="text-lg px-8 py-4" onClick={handleCallNow}>

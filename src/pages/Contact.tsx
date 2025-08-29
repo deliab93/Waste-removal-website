@@ -331,7 +331,15 @@ const Contact = () => {
           <p className="text-xl mb-8">
             Don't wait! Call us now for immediate assistance or to schedule your free consultation.
           </p>
-          <Button variant="hero" size="lg" className="bg-white text-professional-blue hover:bg-gray-100">
+          <Button 
+            variant="default" 
+            size="lg" 
+            className="bg-white text-trust-navy hover:bg-gray-100 font-semibold border-2 border-white shadow-lg"
+            onClick={() => {
+              console.log('Call button clicked');
+              window.location.href = 'tel:1-800-326-9278';
+            }}
+          >
             <Phone className="h-5 w-5 mr-2" />
             Call 1-800-ECO-WASTE
           </Button>

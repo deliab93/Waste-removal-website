@@ -26,7 +26,7 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const handleGetQuote = () => {
-    navigate('/contact');
+    navigate('/prices');
   };
 
   const handleCallNow = () => {
@@ -92,10 +92,13 @@ const Header = () => {
 
           {/* Call CTA */}
           <div className="hidden md:flex items-center space-x-4">
-            <div className="flex items-center space-x-2 text-trust-navy">
+            <button 
+              onClick={handleCallNow}
+              className="flex items-center space-x-2 text-trust-navy hover:text-eco-green transition-colors cursor-pointer"
+            >
               <Phone className="h-4 w-4" />
               <span className="font-semibold">1-800-ECO-WASTE</span>
-            </div>
+            </button>
             <Button variant="cta" size="sm" onClick={handleGetQuote}>
               Get Quote
             </Button>
@@ -160,10 +163,13 @@ const Header = () => {
                 );
               })}
               <div className="px-3 py-2">
-                <div className="flex items-center space-x-2 text-trust-navy mb-2">
+                <button 
+                  onClick={handleCallNow}
+                  className="flex items-center space-x-2 text-trust-navy hover:text-eco-green transition-colors cursor-pointer mb-2"
+                >
                   <Phone className="h-4 w-4" />
                   <span className="font-semibold">1-800-ECO-WASTE</span>
-                </div>
+                </button>
                 <Button variant="cta" size="sm" className="w-full" onClick={handleGetQuote}>
                   Get Quote
                 </Button>

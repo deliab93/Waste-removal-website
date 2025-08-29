@@ -237,7 +237,7 @@ const Blog = () => {
               placeholder="Enter your email" 
               className="bg-white text-black"
             />
-            <Button variant="hero" className="bg-white text-professional-blue hover:bg-gray-100">
+            <Button variant="secondary" className="bg-white text-professional-blue hover:bg-gray-100">
               Subscribe
             </Button>
           </div>
