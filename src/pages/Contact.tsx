@@ -55,6 +55,7 @@ const Contact = () => {
           message: ""
         });
         
+        setIsSubmitting(false);
         return;
       }
       
