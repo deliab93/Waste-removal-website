@@ -46,7 +46,7 @@ serve(async (req) => {
 
     const emailData = {
       from: 'EcoWaste Pro <noreply@ecowastepro.com>',
-      to: ['deliab93@mail.com'],
+      to: ['deliabm@engineer.com'],
       subject: `New Contact Form Submission from ${contactData.name}`,
       html: emailContent,
     }
