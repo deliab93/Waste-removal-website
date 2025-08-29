@@ -71,31 +71,30 @@ const ReviewStep = ({ quoteData, onPrev, onSubmit }: ReviewStepProps) => {
           description: "We'll get back to you within 24 hours with a detailed quote.",
         });
         onSubmit();
-        return;
-      }
-      
-      console.log('Calling Supabase edge function...');
-      const { data, error } = await supabase.functions.invoke('send-quote-email', {
-        body: quoteData,
-      });
-
-      console.log('Edge function response:', { data, error });
-
-      if (error) {
-        console.error('Supabase function error:', error);
-        throw error;
-      }
-
-      if (data?.success) {
-        console.log('Quote submitted successfully');
-        toast({
-          title: "Quote Submitted Successfully!",
-          description: "We'll get back to you within 24 hours with a detailed quote.",
-        });
-        onSubmit();
       } else {
-        console.error('Quote submission failed:', data);
-        throw new Error(data?.error || 'Failed to submit quote');
+        console.log('Calling Supabase edge function...');
+        const { data, error } = await supabase.functions.invoke('send-quote-email', {
+          body: quoteData,
+        });
+
+        console.log('Edge function response:', { data, error });
+
+        if (error) {
+          console.error('Supabase function error:', error);
+          throw error;
+        }
+
+        if (data?.success) {
+          console.log('Quote submitted successfully');
+          toast({
+            title: "Quote Submitted Successfully!",
+            description: "We'll get back to you within 24 hours with a detailed quote.",
+          });
+          onSubmit();
+        } else {
+          console.error('Quote submission failed:', data);
+          throw new Error(data?.error || 'Failed to submit quote');
+        }
       }
     } catch (error) {
       console.error('Error submitting quote:', error);
