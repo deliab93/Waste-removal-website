@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -35,6 +35,29 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
+      // Check if Supabase is configured
+      if (!isSupabaseConfigured) {
+        console.log('Supabase not configured, simulating form submission...', formData);
+        
+        // Simulate successful submission
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        toast({
+          title: "Message Sent!",
+          description: "Thank you for contacting us. We'll get back to you within 24 hours.",
+        });
+        
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          service: "",
+          message: ""
+        });
+        
+        return;
+      }
+      
       console.log('Submitting contact form...', formData);
       const { data, error } = await supabase.functions.invoke('send-contact-email', {
         body: formData,

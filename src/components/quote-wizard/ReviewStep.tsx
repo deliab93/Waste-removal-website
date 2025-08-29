@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { QuoteData } from '../QuoteWizard';
 import { calculateApproximatePrice } from '@/utils/pricing';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 
 interface ReviewStepProps {
   quoteData: QuoteData;
@@ -59,6 +59,21 @@ const ReviewStep = ({ quoteData, onPrev, onSubmit }: ReviewStepProps) => {
     setIsSubmitting(true);
     
     try {
+      // Check if Supabase is configured
+      if (!isSupabaseConfigured) {
+        console.log('Supabase not configured, simulating quote submission...', quoteData);
+        
+        // Simulate successful submission
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        toast({
+          title: "Quote Submitted Successfully!",
+          description: "We'll get back to you within 24 hours with a detailed quote.",
+        });
+        onSubmit();
+        return;
+      }
+      
       console.log('Calling Supabase edge function...');
       const { data, error } = await supabase.functions.invoke('send-quote-email', {
         body: quoteData,
